@@ -13,10 +13,11 @@ return new class extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->string('paymentId')->unique();
-            $table->string('userId')->unique();
-            $table->string('merchantId')->unique();
+            $table->string('paymentId')->unique()->index();
+            $table->string('accountId')->index();
+            $table->string('merchantId')->index();
             $table->float('amount');
+            $table->timestamps();
         });
     }
 

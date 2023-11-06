@@ -44,11 +44,10 @@ class PaymentControllerTest extends TestCase
     /**
      * @throws Exception
      */
-    private function thereIsUser(string $merchantId): string {
+    private function thereIsUser(): string {
         $user = $this->userService->addUser(
             'Jan Kowalski',
             'jan.kowalski@digitalnewagency.com',
-            $merchantId,
         );
 
         return $user->getUserId();
@@ -69,13 +68,14 @@ class PaymentControllerTest extends TestCase
     {
         // given
         $merchantId = $this->thereIsMerchant();
-        $userId = $this->thereIsUser($merchantId);
+        $userId = $this->thereIsUser();
         $initialBalance = $this->userHasPositiveAccountBalance($userId);
+        $accountId = $this->accountService->getAccountForUser($userId)->getAccountId();
 
         // when
         $amount = 10.0;
         $payload = [
-            'user_id' => $userId,
+            'account_id' => $accountId,
             'merchant_id' => $merchantId,
             'amount' => $amount,
         ];
@@ -85,16 +85,16 @@ class PaymentControllerTest extends TestCase
             ->json();
 
         // then
-        self::assertEquals($userId, $response['user_id']);
+        self::assertEquals($accountId, $response['account_id']);
         self::assertEquals($merchantId, $response['merchant_id']);
         self::assertEquals($amount, $response['amount']);
 
         $storedPayment = Payment::query()->where('paymentId', $response['payment_id'])->first();
-        self::assertEquals($userId, $storedPayment->userId);
+        self::assertEquals($accountId, $storedPayment->accountId);
         self::assertEquals($merchantId, $storedPayment->merchantId);
         self::assertEquals($amount, $storedPayment->amount);
 
-        $account = Account::query()->where('userId', $userId)->first();
+        $account = Account::query()->where('accountId', $accountId)->first();
         self::assertEquals($initialBalance - $amount, $account->balance);
     }
 }

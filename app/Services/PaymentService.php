@@ -2,18 +2,16 @@
 
 namespace App\Services;
 
+use App\Http\Resources\AccountDto;
 use App\Http\Resources\MerchantDto;
 use App\Http\Resources\PaymentDto;
-use App\Http\Resources\UserDto;
 use App\Models\Payment;
 use Exception;
-use Illuminate\Support\Facades\DB;
 use Ramsey\Uuid\Uuid;
 
 readonly class PaymentService
 {
     public function __construct(
-        private UserService $userService,
         private MerchantService $merchantService,
         private AccountService $accountService,
     ) {}
@@ -22,16 +20,15 @@ readonly class PaymentService
      * @throws Exception
      */
     public function addPayment(PaymentDto $paymentDto): PaymentDto {
-        $user = $this->userService->getUser($paymentDto->getUserId());
         $merchant = $this->merchantService->getMerchant($paymentDto->getMerchantId());
-        $account = $this->accountService->getAccountForUser($paymentDto->getUserId());
+        $account = $this->accountService->getAccount($paymentDto->getAccountId());
 
         if ($account->getBalance() < $paymentDto->getAmount()) {
             throw new Exception("insufficient funds");
         }
 
         $this->accountService->decreaseBalance($account->getAccountId(), $paymentDto->getAmount());
-        $payment = $this->toPayment($paymentDto, $user, $merchant);
+        $payment = $this->toPayment($paymentDto, $account, $merchant);
         $payment->save();
 
         return $this->paymentToPaymentDto($payment);
@@ -40,7 +37,7 @@ readonly class PaymentService
     private function paymentToPaymentDto(Payment $payment): PaymentDto {
         return new PaymentDto(
             $payment->paymentId,
-            $payment->userId,
+            $payment->accountId,
             $payment->merchantId,
             $payment->amount,
         );
@@ -48,12 +45,12 @@ readonly class PaymentService
 
     private function toPayment(
         PaymentDto $paymentDto,
-        UserDto $userDto,
+        AccountDto $accountDto,
         MerchantDto $merchantDto
     ): Payment {
         return new Payment([
             'paymentId' => Uuid::uuid4(),
-            'userId' => $userDto->getUserId(),
+            'accountId' => $accountDto->getAccountId(),
             'merchantId' => $merchantDto->getMerchantId(),
             'amount' => $paymentDto->getAmount(),
         ]);

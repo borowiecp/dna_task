@@ -16,12 +16,11 @@ readonly class UserService
     /**
      * @throws Exception
      */
-    public function addUser(string $fullName, string $email, string $merchantId): UserDto {
+    public function addUser(string $fullName, string $email): UserDto {
         $user = new User([
             'userId' => Uuid::uuid4(),
             'fullName' => $fullName,
-            'email' => $email,
-            'merchantId' => $merchantId
+            'email' => $email
         ]);
 
         $user->save();
@@ -33,7 +32,6 @@ readonly class UserService
      * @throws Exception
      */
     public function getUser(string $userId): UserDto {
-        dd($userId);
         $user = User::query()->where('userId', $userId)->first();
 
         if (is_null($user)) {

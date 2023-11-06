@@ -25,8 +25,7 @@ class UserController extends BaseController
 
         $res = $this->userService->addUser(
             $req->getString('fullName'),
-            $req->getString('email'),
-            $req->getString('merchantId'),
+            $req->getString('email')
         );
 
         return response()->json($res->toResponse());

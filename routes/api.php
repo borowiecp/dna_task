@@ -8,3 +8,4 @@ use Illuminate\Support\Facades\Route;
 Route::post('/users', [UserController::class, 'addUser']);
 Route::post('/transactions', [PaymentController::class, 'addPayment']);
 Route::post('/merchants', [MerchantController::class, 'addMerchant']);
+Route::get('/merchants/income', [MerchantController::class, 'getIncome']);

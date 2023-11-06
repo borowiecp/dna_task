@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
@@ -37,5 +36,10 @@ class Merchant extends Model
      */
     public $incrementing = true;
 
-    public $timestamps = false;
+    public $timestamps = true;
+
+    public function payments()
+    {
+        return $this->hasMany(Payment::class, 'merchantId', 'merchantId');
+    }
 }

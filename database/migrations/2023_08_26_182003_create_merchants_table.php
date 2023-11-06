@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('merchants', function (Blueprint $table) {
             $table->id();
-            $table->string('merchantId')->unique();
+            $table->string('merchantId')->unique()->index();
             $table->string('name')->unique();
+            $table->timestamps();
         });
     }
 

@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
@@ -38,5 +37,5 @@ class Account extends Model
      */
     public $incrementing = true;
 
-    public $timestamps = false;
+    public $timestamps = true;
 }

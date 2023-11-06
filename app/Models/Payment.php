@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
@@ -31,7 +30,7 @@ class Payment extends Model
      */
     protected $primaryKey = 'id';
 
-    protected $fillable = ['paymentId', 'userId', 'merchantId', 'amount'];
+    protected $fillable = ['paymentId', 'accountId', 'merchantId', 'amount'];
 
     /**
      * Indicates if the model's ID is auto-incrementing.
@@ -40,5 +39,5 @@ class Payment extends Model
      */
     public $incrementing = true;
 
-    public $timestamps = false;
+    public $timestamps = true;
 }

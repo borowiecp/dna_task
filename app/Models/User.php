@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
@@ -39,5 +38,5 @@ class User extends Model
 
     protected $fillable = ['userId', 'fullName', 'email', 'merchantId'];
 
-    public $timestamps = false;
+    public $timestamps = true;
 }

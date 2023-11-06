@@ -55,6 +55,12 @@ readonly class AccountService {
         return $this->accountToAccountDto($account);
     }
 
+    public function getAccount(string $accountId): AccountDto
+    {
+        $account = $this->getAccountById($accountId);
+        return $this->accountToAccountDto($account);
+    }
+
     private function accountToAccountDto(Account $account): AccountDto {
         return new AccountDto($account->accountId, $account->userId, $account->balance);
     }

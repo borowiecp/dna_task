@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('accounts', function (Blueprint $table) {
             $table->id();
-            $table->string('accountId')->unique();
-            $table->string('userId')->unique();
+            $table->string('accountId')->unique()->index();
+            $table->string('userId')->unique()->index();
             $table->float('balance');
+            $table->timestamps();
         });
     }
 

@@ -5,18 +5,18 @@ namespace App\Http\Resources;
 class PaymentDto
 {
     private ?string $paymentId;
-    private ?string $userId;
+    private ?string $accountId;
     private ?string $merchantId;
     private ?float $amount;
 
     public function __construct(
         ?string $paymentId = null,
-        ?string $userId = null,
+        ?string $accountId = null,
         ?string $merchantId = null,
         ?float $amount = null
     ) {
         $this->paymentId = $paymentId;
-        $this->userId = $userId;
+        $this->accountId = $accountId;
         $this->merchantId = $merchantId;
         $this->amount = $amount;
     }
@@ -24,7 +24,7 @@ class PaymentDto
     public function toResponse(): array {
         return [
             'payment_id' => $this->paymentId,
-            'user_id' => $this->userId,
+            'account_id' => $this->accountId,
             'merchant_id' => $this->merchantId,
             'amount' => $this->amount,
         ];
@@ -40,14 +40,14 @@ class PaymentDto
         $this->paymentId = $paymentId;
     }
 
-    public function getUserId(): ?string
+    public function getAccountId(): ?string
     {
-        return $this->userId;
+        return $this->accountId;
     }
 
-    public function setUserId(?string $userId): void
+    public function setAccountId(?string $accountId): void
     {
-        $this->userId = $userId;
+        $this->accountId = $accountId;
     }
 
     public function getMerchantId(): ?string
